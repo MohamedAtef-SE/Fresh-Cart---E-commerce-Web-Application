@@ -29,7 +29,7 @@ export default function Payment() {
             },
 
             params: {
-                url: "https://mohamedatef-se.github.io/Fresh-Cart---E-commerce-Web-Application/#/",
+                url: "https://mohamedatef-se.github.io/Fresh-Cart---E-commerce-Web-Application/#",
             }
 
         }
