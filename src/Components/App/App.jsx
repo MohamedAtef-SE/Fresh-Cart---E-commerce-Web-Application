@@ -42,7 +42,7 @@ const myRoute = createHashRouter(
         { path: '/brands/', element: <Brands /> },
         { path: '/brands/:id', element: <SpecBrand /> },
         { path: '/payment', element: <Protected> <Payment /> </Protected> },
-        { path: '/allorders', element: <Protected> <AllOrders /> </Protected> },
+        { path: '//allorders', element: <Protected> <AllOrders /> </Protected> },
         { path: '/register', element: <Register /> },
         { path: '/login', element: <Login /> },
         { path: '/forget_password', element: <ForgetPassword /> },
