@@ -13,8 +13,13 @@ body {
   font-family: var(--font-family) !important;
 }
 
+
 .vh-notFound {
   height: calc(100vh - 203px);
+}
+
+.vh-100-custom {
+  height: calc(100vh - 58.75px);
 }
 
 .rating-color {
@@ -104,6 +109,10 @@ a:hover {
   height: 50vh;
 }
 
+.vh-50-navbar {
+  height: calc(50vh - 58.75px);
+}
+
 .vh-75 {
   height: 75vh;
 }
@@ -116,4 +125,9 @@ a:hover {
 .active {
   color: #0aad0a !important;
   font-weight: bolder;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  display: none;
 }

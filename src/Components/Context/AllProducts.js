@@ -12,6 +12,8 @@ export default function AllProductsProvider({ children }) {
     const [catID, setCatID] = useState(undefined);
     const [rangePrice, setRangePrice] = useState(undefined);
     const [sortBy, setSortBy] = useState(undefined);
+    const [pageNumber, setPageNumber] = useState(undefined);
+    const [numOfPages, setNumOfPages] = useState(undefined);
 
     //   -ratingsAverage &&  ratingsAverage  &&  price  &&  -price  &&  -sold  &&  sold  //
 
@@ -34,9 +36,17 @@ export default function AllProductsProvider({ children }) {
                 'category': catID,
                 'price[gte]': rangePrice,
                 'sort': sortBy,
+                'page': pageNumber,
             }
+        }).then((res) => {
+            console.log(res.data.metadata.numberOfPages)
+
+            setNumOfPages(res.data.metadata.numberOfPages);
+
+            return res;
         });
     }
+
 
     async function getCategories() {
 
@@ -54,7 +64,7 @@ export default function AllProductsProvider({ children }) {
     }
 
 
-    return <productsContext.Provider value={{ getTopThree, getAllProducts, getBrands, getCategories, setBrandID, setCatID, setRangePrice, setSortBy, sortBy, catID, brandID, rangePrice }}>
+    return <productsContext.Provider value={{ getTopThree, getAllProducts, getBrands, getCategories, setBrandID, setCatID, setRangePrice, setSortBy, setPageNumber, setNumOfPages, sortBy, catID, brandID, rangePrice, pageNumber, numOfPages }}>
         {children}
     </productsContext.Provider>
 }

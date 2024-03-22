@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import LoadingPage from './../LoadingPage/LoadingPage';
@@ -8,23 +8,63 @@ import { productsContext } from "../Context/AllProducts";
 import { wishContext } from './../Context/wishContext';
 import Slider from "react-slick";
 import { Helmet } from "react-helmet";
+import Fade from './../Fade/Fade';
 
 
 export default function Home() {
+
+    const parentOfPageNumBtns = document.querySelector('.parentOfPageNumBtns');
+    const priceRange = document.querySelectorAll('.rangePrice');
+
+    const [customRate, setCustomRate] = useState(0);
 
     const { addProductToCart } = useContext(cartContext);
 
     const { handleWishlistToggle, WishListID } = useContext(wishContext);
 
-    const { getAllProducts } = useContext(productsContext);
+    const { getAllProducts, numOfPages, getCategories, getBrands, setBrandID, brandID, setCatID,
+        catID, setRangePrice, sortBy, setSortBy, getTopThree,
+        setPageNumber, setNumOfPages } = useContext(productsContext);
 
-    const [customRate, setCustomRate] = useState(0);
 
     const { data: dataAllProducts, isLoading: loadingAllProducts, refetch } = useQuery({
         queryKey: ['allProducts'],
         queryFn: getAllProducts,
         gcTime: 60000,
     });
+
+
+    useEffect(() => {
+        for (let i = 0; i < numOfPages; i++) {
+            const newButton = document.createElement('button');
+            newButton.textContent = `${i + 1}`;
+            newButton.classList.add('btn')
+            newButton.classList.add('btn-success')
+            newButton.classList.add('mx-1')
+            newButton.addEventListener('click', function () {
+                handleCheckList({ page: i + 1 });
+            })
+
+            if (parentOfPageNumBtns) {
+                parentOfPageNumBtns.appendChild(newButton);
+            }
+
+        }
+
+        return () => {
+            removeBtns();
+        }
+    }, [numOfPages, parentOfPageNumBtns])
+
+    function removeBtns() {
+        const element = document.querySelector('.parentOfPageNumBtns');
+        if (element) {
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+        }
+
+    }
 
 
     async function addProduct(id) {
@@ -56,15 +96,14 @@ export default function Home() {
 
     //=========SIDE BAR============//
 
-    const { getCategories, getBrands, setBrandID, brandID, setCatID, catID, rangePrice, setRangePrice, sortBy, setSortBy, getTopThree } = useContext(productsContext);
-
     const { data: dataAllCategories, isLoading: loadingAllCategories } = useQuery({
         queryKey: ['allCategories'],
         queryFn: getCategories,
     });
 
-    const { data: topThree, isLoading: topThreeLoading } = useQuery({ queryKey: ['topThree'], queryFn: getTopThree });
-
+    const { data: topThree, isLoading: topThreeLoading } = useQuery({
+        queryKey: ['topThree'], queryFn: getTopThree
+    });
 
     const { data: dataAllBrands, isLoading: loadingAllBrands } = useQuery({
         queryKey: ['allBrands'],
@@ -72,7 +111,7 @@ export default function Home() {
     });
 
 
-    function handleCheckList({ eventOwner, cat, brand, price, sort }) {
+    function handleCheckList({ eventOwner, page, cat, brand, price, sort }) {
         if (cat !== undefined) {
 
             if (cat.id !== catID) {
@@ -97,13 +136,12 @@ export default function Home() {
             }
 
         }
-
         if (price !== undefined) {
-
             setRangePrice(price);
-            document.querySelectorAll('.rangePrice').forEach((rangePrice) => {
+            eventOwner.target.classList.add('active');
+            priceRange.forEach((rangePrice) => {
                 rangePrice.addEventListener('click', function (e) {
-                    document.querySelectorAll('.rangePrice').forEach((rangePrice) => {
+                    priceRange.forEach((rangePrice) => {
                         rangePrice.classList.remove('active');
                     })
                     e.target.classList.add('active');
@@ -116,6 +154,9 @@ export default function Home() {
             setSortBy(sort);
         }
 
+        if (page !== undefined) {
+            setPageNumber(page);
+        }
         setTimeout(() => { refetch() }, [1000]);
     }
 
@@ -125,39 +166,34 @@ export default function Home() {
         return <LoadingPage />
     }
 
-    const productsByRating = dataAllProducts.data.data.filter((product) => { return product.ratingsAverage >= customRate });
-    //const productsByPrice = productsByRating.filter((product) => { return product.price >= min && product.price <= max });
 
+    const productsByRating = dataAllProducts.data.data.filter((product) => { return product.ratingsAverage >= customRate });
 
     //==================== START Slick-Slider ====================//
 
     const settings = {
         dots: false,
         infinite: true,
-        slidesToShow: 6,
+        slidesToShow: 10,
         slidesToScroll: 1,
         autoplay: true,
-        speed: 4000,
+        speed: 6000,
         autoplaySpeed: 4000,
         cssEase: "linear"
     };
 
     //==================== END Slick-Slider ====================//
 
-
     return <section className="home position-relative">
         <Helmet>
             <title>Home Page</title>
         </Helmet>
-
-        <div className="container">
-
-
-            <div className="Head-part vh-75 rounded shadow my-5 border-1 p-5 bg-body-secondary container">
-                <h4 className="fw-bolder mb-3">Most Sold Products</h4>
+        <div className="Head-part m-0 p-0">
+            <Fade />
+            <div className="my-1">
+                <h4 className="fw-bolder m-0 text-dark">TOP 20 Sold Items</h4>
                 <div className="slider-container">
                     <Slider {...settings}>
-
                         {topThree.data.data.map((product) => {
                             return <div key={product.id} className="rounded product">
                                 <Link to={`/productDetails/${product.id}`}>
@@ -175,9 +211,10 @@ export default function Home() {
                         }
                     </Slider>
                 </div>
-
             </div>
+        </div>
 
+        <div className="main-part container">
             <div className="row">
                 <div className="col-3">
                     <div className="box bg-body-tertiary min-vh-100 p-3 ">
@@ -205,6 +242,7 @@ export default function Home() {
                         </div>
                         <div className="price-range my-4">
                             <h6 className="fw-bolder font-sm">Price</h6>
+                            <span role="button" onClick={(e) => { handleCheckList({ eventOwner: e, price: 100 }) }} className="rangePrice d-block font-sm my-2">Starting From EGP 100</span>
                             <span role="button" onClick={(e) => { handleCheckList({ eventOwner: e, price: 1000 }) }} className="rangePrice d-block font-sm my-2">Starting From EGP 1,000</span>
                             <span role="button" onClick={(e) => { handleCheckList({ eventOwner: e, price: 3000 }) }} className="rangePrice d-block font-sm  my-2">Starting From EGP 3,000</span>
                             <span role="button" onClick={(e) => { handleCheckList({ eventOwner: e, price: 6000 }) }} className="rangePrice d-block font-sm  my-2">Starting From EGP 6,000</span>
@@ -287,14 +325,22 @@ export default function Home() {
 
                                     }} className="btn bg-main text-white m-1 py-1 rounded">+</button>
                                     {localStorage.getItem('tkn') && WishListID.find((id) => { return id == product.id }) ? <i id={product.id} onClick={(e) => { addToWichList(product.id) }} className="fa-solid fa-heart text-danger fa-xl"></i> : <i id={product.id} onClick={(e) => { addToWichList(product.id) }} className="fa-solid fa-heart text-dark fa-xl"></i>}
+
                                 </div>
                             </div>
                         })
                         }
+
+                        <div className="parentOfPageNumBtns text-center mb-5">
+
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
+
 
     </section >
 }
