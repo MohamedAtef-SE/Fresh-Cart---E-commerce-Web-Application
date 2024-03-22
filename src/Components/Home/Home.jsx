@@ -125,7 +125,7 @@ export default function Home() {
                 cat.checked = false;
                 setCatID(undefined);
             }
-
+            setPageNumber(1);
         }
 
         if (brand !== undefined) {
@@ -133,15 +133,17 @@ export default function Home() {
             if (brand.id !== brandID) {
                 setBrandID(brand.id);
             }
-
             else if (brand.id === brandID) {
                 brand.checked = false;
                 setBrandID(undefined);
             }
+            setPageNumber(1);
 
         }
+
         if (price !== undefined) {
             setRangePrice(price);
+            setPageNumber(1);
             eventOwner.target.classList.add('active');
             priceRange.forEach((rangePrice) => {
                 rangePrice.addEventListener('click', function (e) {
@@ -156,6 +158,7 @@ export default function Home() {
 
         if (sort !== sortBy) {
             setSortBy(sort);
+            setPageNumber(1);
         }
 
         if (page !== undefined) {
@@ -310,7 +313,7 @@ export default function Home() {
                             </select>
                         </div>
 
-                        {productsByRating.map((product) => {
+                        {productsByRating.length !== 0 ? productsByRating.map((product) => {
                             return <div key={product.id} className="col-md-3 mb-5 product">
                                 <Link to={`/productDetails/${product.id}`}>
                                     <div>
@@ -333,6 +336,10 @@ export default function Home() {
                                 </div>
                             </div>
                         })
+                            : <div className="vh-100 d-flex justify-content-center align-items-center flex-column">
+                                <i className="fa-regular fa-face-rolling-eyes fa-7x"></i>
+                                <h5 className="fw-bolder my-4">No Available Items</h5>
+                            </div>
                         }
 
                         <div className="parentOfPageNumBtns text-center mb-5">
