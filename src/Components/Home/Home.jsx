@@ -36,11 +36,15 @@ export default function Home() {
 
     useEffect(() => {
         for (let i = 0; i < numOfPages; i++) {
-            const newButton = document.createElement('button');
+            const newButton = document.createElement('span');
             newButton.textContent = `${i + 1}`;
-            newButton.classList.add('btn')
-            newButton.classList.add('btn-success')
-            newButton.classList.add('mx-1')
+            newButton.classList.add('text-main');
+            newButton.classList.add('fw-bolder');
+            newButton.classList.add('px-1');
+            newButton.setAttribute('role', 'button');
+            newButton.classList.add('border-bottom');
+            newButton.classList.add('border-3');
+            newButton.classList.add('mx-2');
             newButton.addEventListener('click', function () {
                 handleCheckList({ page: i + 1 });
             })
