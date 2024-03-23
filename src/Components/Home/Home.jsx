@@ -198,7 +198,7 @@ export default function Home() {
         <div className="Head-part m-0 p-0">
             <Fade />
             <div className="my-1">
-                <h4 className="fw-bolder m-0 text-dark">TOP 20 Sold Items</h4>
+                <h4 className="fw-bolder m-0 mx-2 text-dark">Most Popular Sold Items</h4>
                 <div className="slider-container">
                     <Slider {...settings}>
                         {topThree.data.data.map((product) => {
@@ -208,7 +208,7 @@ export default function Home() {
                                         <img className="w-100 rounded" src={product.imageCover} alt="product" />
                                         <div className="h-75px">
                                             <h6 className="fw-bold my-2 font-sm text-main">{product.category.name}</h6>
-                                            <p className="font-sm my-2 fw-bold">{product.title.split(' ').slice(0, 4).join(' ')}</p>
+                                            <p className="font-sm my-2 fw-bold">{product.title.split(' ').slice(0, 3).join(' ')}</p>
                                         </div>
                                     </div>
                                 </Link>

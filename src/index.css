@@ -113,6 +113,14 @@ a:hover {
   height: calc(50vh - 58.75px);
 }
 
+.vh-75-navbar {
+  height: calc(75vh - 58.75px);
+}
+
+.vh-100-navbar {
+  height: calc(100vh - 58.75px);
+}
+
 .vh-75 {
   height: 75vh;
 }
