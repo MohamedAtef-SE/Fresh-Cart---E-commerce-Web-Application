@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import logoImage from '../../Images/freshcart-logo.svg';
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { authContext } from "../Context/AuthContextProvider";
 import { cartContext } from "../Context/CartContext";
 import { wishContext } from "../Context/wishContext";
@@ -11,6 +11,7 @@ export default function Navbar() {
 
     const { tkn, tknFn, userData } = useContext(authContext);
     const navigate = useNavigate();
+    const [active, setActive] = useState('home');
 
     const { numOfCartItems } = useContext(cartContext);
     const { numOfWishProducts } = useContext(wishContext);
@@ -21,17 +22,18 @@ export default function Navbar() {
         navigate('/login');
     }
 
-    document.querySelectorAll('.nav-link').forEach((gate) => {
+    // document.querySelectorAll('.nav-link').forEach((gate) => {
 
-        gate.addEventListener('click', function (e) {
+    //     gate.addEventListener('click', function (e) {
 
-            document.querySelectorAll('.nav-link').forEach((gate) => {
-                gate.classList.remove('active');
-            })
+    //         document.querySelectorAll('.nav-link').forEach((gate) => {
+    //             gate.classList.remove('active');
+    //         })
 
-            e.target.classList.add('active');
-        })
-    })
+    //         e.target.classList.add('active');
+    //     })
+    // })
+
 
     return <>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -42,14 +44,14 @@ export default function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse w-100" id="navbarNav">
                     <ul className="navbar-nav me-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link active" aria-current="page" to="/home">Home</Link>
+                        <li className="nav-item mx-2">
+                            <Link onClick={() => { setActive('home') }} className={active === 'home' ? 'active' : null + "nav-link"} aria-current="page" to="/home">Home</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to="/categories">Categories</Link>
+                        <li className="nav-item mx-2">
+                            <Link onClick={() => { setActive('cat') }} className={active === 'cat' ? 'active' : null + "nav-link"} aria-current="page" to="/categories">Categories</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to="/brands">Brands</Link>
+                        <li className="nav-item mx-2">
+                            <Link onClick={() => { setActive('brand') }} className={active === 'brand' ? 'active' : null + "nav-link"} aria-current="page" to="/brands">Brands</Link>
                         </li>
                     </ul>
 
@@ -65,7 +67,7 @@ export default function Navbar() {
                             </li>
                             <li className="mx-3">
                                 <Link className="position-relative py-2" to="/wish_list">
-                                    {numOfWishProducts == 0 ? <i className="fa-solid fa-heart"></i> : <i className="fa-solid text-danger fa-heart"></i>}
+                                    {numOfWishProducts == 0 ? <i className="fa-regular text-danger fa-heart"></i> : <i className="fa-solid text-danger fa-heart"></i>}
                                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-main">
                                         {numOfWishProducts != 0 ? numOfWishProducts : ''}
                                     </span>

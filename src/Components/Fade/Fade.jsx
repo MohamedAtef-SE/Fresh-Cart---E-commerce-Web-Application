@@ -16,19 +16,21 @@ function Fade() {
         waitForAnimate: true
     };
     return (
-        <div className="slider-container">
-            <Slider {...settings}>
-                <div>
-                    <img className="w-100 vh-50-navbar" src={image_1} />
-                </div>
-                <div>
-                    <img className="w-100 vh-50-navbar" src={image_2} />
-                </div>
-                <div>
-                    <img className="w-100 vh-50-navbar" src={image_3} />
-                </div>
-            </Slider>
-        </div>
+        <section className="container-fluid">
+            <div className="slider-container">
+                <Slider {...settings}>
+                    <div>
+                        <img className="w-100 vh-50-navbar" src={image_1} />
+                    </div>
+                    <div>
+                        <img className="w-100 vh-50-navbar" src={image_2} />
+                    </div>
+                    <div>
+                        <img className="w-100 vh-50-navbar" src={image_3} />
+                    </div>
+                </Slider>
+            </div>
+        </section>
     );
 }
 
