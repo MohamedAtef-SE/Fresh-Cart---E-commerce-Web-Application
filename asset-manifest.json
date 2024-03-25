@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Fresh-Cart---E-commerce-Web-Application/static/css/main.90c9d7c4.css",
-    "main.js": "/Fresh-Cart---E-commerce-Web-Application/static/js/main.a109215d.js",
+    "main.js": "/Fresh-Cart---E-commerce-Web-Application/static/js/main.460d98f7.js",
     "static/media/image_01.jpg": "/Fresh-Cart---E-commerce-Web-Application/static/media/image_01.64d5c4035fb62e2456f7.jpg",
     "static/media/image_02.jpg": "/Fresh-Cart---E-commerce-Web-Application/static/media/image_02.8a8f4316216332e991b1.jpg",
     "static/media/image_03.jpg": "/Fresh-Cart---E-commerce-Web-Application/static/media/image_03.d10f298e9beca5e711be.jpg",
@@ -21,10 +21,10 @@
     "static/media/slick.woff": "/Fresh-Cart---E-commerce-Web-Application/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/Fresh-Cart---E-commerce-Web-Application/index.html",
     "main.90c9d7c4.css.map": "/Fresh-Cart---E-commerce-Web-Application/static/css/main.90c9d7c4.css.map",
-    "main.a109215d.js.map": "/Fresh-Cart---E-commerce-Web-Application/static/js/main.a109215d.js.map"
+    "main.460d98f7.js.map": "/Fresh-Cart---E-commerce-Web-Application/static/js/main.460d98f7.js.map"
   },
   "entrypoints": [
     "static/css/main.90c9d7c4.css",
-    "static/js/main.a109215d.js"
+    "static/js/main.460d98f7.js"
   ]
 }
