@@ -34,15 +34,7 @@ export default function Login() {
             .required('Email is required')
             .email('Invalid email address'),
 
-        password: Yup.string()
-            .required('Password is required')
-            .min(8, 'Password must be at least 8 characters')
-            .max(20, 'Password must not exceed 20 characters')
-            .matches(/[A-Z]/, 'At least 1 uppercase letter is required')
-            .matches(/[0-9]/, 'At least 1 number is required')
-            .matches(/[!@#$_%^&*(),.?":{}|<>]/, 'At least 1 special character is required'),
-
-
+        password: Yup.string().required('Invalid Password'),
     }
     );
 
@@ -74,7 +66,7 @@ export default function Login() {
             });
     }
 
-    const registerFormik = useFormik({
+    const loginFormik = useFormik({
 
         initialValues: userData,
 
@@ -99,19 +91,19 @@ export default function Login() {
                 {alreadyExistMsg ? <p className="alert alert-danger">{alreadyExistMsg}</p> : ''}
                 <h2 className="text-capitalize fw-light mb-5">Login:</h2>
 
-                <form onSubmit={registerFormik.handleSubmit}>
+                <form onSubmit={loginFormik.handleSubmit}>
 
 
                     <div className="d-flex flex-column w-100 mb-3">
                         <label htmlFor="email">Email:</label>
-                        <input onBlur={registerFormik.handleBlur} onChange={registerFormik.handleChange} value={registerFormik.values.email} type="email" className="form-control" id="email" name="email" />
-                        {registerFormik.touched.email && registerFormik.errors.email ? <p className="alert alert-danger">{registerFormik.errors.email}</p> : ''}
+                        <input onBlur={loginFormik.handleBlur} onChange={loginFormik.handleChange} value={loginFormik.values.email} type="email" className="form-control" id="email" name="email" />
+                        {loginFormik.touched.email && loginFormik.errors.email ? <p className="alert alert-danger">{loginFormik.errors.email}</p> : ''}
                     </div>
 
                     <div className="d-flex flex-column w-100 mb-3">
                         <label htmlFor="password">Password:</label>
-                        <input onBlur={registerFormik.handleBlur} onChange={registerFormik.handleChange} value={registerFormik.values.password} type="password" className="form-control" id="password" name="password" />
-                        {registerFormik.touched.password && registerFormik.errors.password ? <p className="alert alert-danger">{registerFormik.errors.password}</p> : ''}
+                        <input onBlur={loginFormik.handleBlur} onChange={loginFormik.handleChange} value={loginFormik.values.password} type="password" className="form-control" id="password" name="password" />
+                        {loginFormik.touched.password && loginFormik.errors.password ? <p className="alert alert-danger">{loginFormik.errors.password}</p> : ''}
                     </div>
                     <div className="w-100 text-end">
                         <button type="submit" className="btn text-white bg-main">{loading ? <i className="fa-solid fa-spin fa-spinner"></i> : 'Login'}</button>

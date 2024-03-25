@@ -14,20 +14,16 @@ import Fade from './../Fade/Fade';
 export default function Home() {
 
     const parentOfPageNumBtns = document.querySelector('.parentOfPageNumBtns');
-    const priceRange = document.querySelectorAll('.rangePrice');
-    const [activeInputCategory, setActiveInputCategory] = useState('');
-    const [activeInputBrand, setActiveInputBrand] = useState('');
-    const [activePrice, setActivePrice] = useState('');
-
-    const [customRate, setCustomRate] = useState(0);
 
     const { addProductToCart } = useContext(cartContext);
 
     const { handleWishlistToggle, WishListID } = useContext(wishContext);
 
     const { getAllProducts, numOfPages, getCategories, getBrands, setBrandID, brandID, setCatID,
-        catID, setRangePrice, sortBy, setSortBy, getTopThree,
-        setPageNumber, setNumOfPages } = useContext(productsContext);
+        catID, setRangePrice, rangePrice, sortBy, setSortBy, getTopThree,
+        setPageNumber, setNumOfPages, clearSavedFilter, activeInputCategory, setActiveInputCategory,
+        activeInputBrand, setActiveInputBrand
+        , activePrice, setActivePrice, customRate, setCustomRate } = useContext(productsContext);
 
 
     const { data: dataAllProducts, isLoading: loadingAllProducts, refetch } = useQuery({
@@ -37,20 +33,18 @@ export default function Home() {
     });
     useEffect(() => {
         if (localStorage.getItem('cartID')) {
-            setCatID(localStorage.getItem('cartID'));
             setActiveInputCategory(localStorage.getItem('cartID'))
         }
         if (localStorage.getItem('brandID')) {
-            setBrandID(localStorage.getItem('brandID'));
             setActiveInputBrand(localStorage.getItem('brandID'))
         }
         if (localStorage.getItem('priceRange')) {
-            setRangePrice(localStorage.getItem('priceRange'));
             setActivePrice(localStorage.getItem('priceRange'))
         }
         if (localStorage.getItem('customRate')) {
             setCustomRate(localStorage.getItem('customRate'));
         }
+
     }, []);
 
 
@@ -135,7 +129,6 @@ export default function Home() {
         queryFn: getBrands,
     });
 
-
     function handleCheckList({ eventOwner, page, cat, brand, price, sort }) {
         if (page == undefined && cat == undefined && brand == undefined && price == undefined && sort == undefined) {
             setNumOfPages(undefined);
@@ -147,10 +140,8 @@ export default function Home() {
             setActiveInputBrand('');
             setActiveInputCategory('');
             setActivePrice('');
-            localStorage.removeItem('cartID');
-            localStorage.removeItem('brandID');
-            localStorage.removeItem('priceRange');
-            localStorage.removeItem('customRate');
+
+            clearSavedFilter();
         }
 
         if (cat !== undefined) {

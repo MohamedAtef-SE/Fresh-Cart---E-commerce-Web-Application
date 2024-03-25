@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { authContext } from "../Context/AuthContextProvider";
 import { cartContext } from "../Context/CartContext";
 import { wishContext } from "../Context/wishContext";
+import { productsContext } from './../Context/AllProducts';
 
 
 
@@ -15,10 +16,13 @@ export default function Navbar() {
 
     const { numOfCartItems } = useContext(cartContext);
     const { numOfWishProducts } = useContext(wishContext);
+    const { clearSavedFilter } = useContext(productsContext);
 
     function logout() {
         tknFn(null);
         localStorage.removeItem('tkn');
+        clearSavedFilter();
+
         navigate('/login');
     }
 

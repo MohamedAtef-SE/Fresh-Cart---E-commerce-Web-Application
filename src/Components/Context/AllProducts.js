@@ -15,11 +15,20 @@ export default function AllProductsProvider({ children }) {
     const [pageNumber, setPageNumber] = useState(undefined);
     const [numOfPages, setNumOfPages] = useState(undefined);
 
+
+    const [activeInputCategory, setActiveInputCategory] = useState('');
+    const [activeInputBrand, setActiveInputBrand] = useState('');
+    const [activePrice, setActivePrice] = useState('');
+    const [customRate, setCustomRate] = useState(0);
+
     //   -ratingsAverage &&  ratingsAverage  &&  price  &&  -price  &&  -sold  &&  sold  //
 
     useEffect(() => {
-        getAllProducts();
+        clearSavedFilter();
+    }, []);
 
+    useEffect(() => {
+        getAllProducts();
     }, [brandID, catID, rangePrice])
 
 
@@ -39,7 +48,6 @@ export default function AllProductsProvider({ children }) {
                 'page': pageNumber,
             }
         }).then((res) => {
-            console.log(res.data.metadata.numberOfPages)
 
             setNumOfPages(res.data.metadata.numberOfPages);
 
@@ -62,9 +70,24 @@ export default function AllProductsProvider({ children }) {
             }
         })
     }
+    function clearSavedFilter() {
+        localStorage.removeItem('cartID');
+        localStorage.removeItem('brandID');
+        localStorage.removeItem('priceRange');
+        localStorage.removeItem('customRate');
+        setActiveInputBrand('');
+        setActiveInputCategory('');
+        setActivePrice('');
+        setCustomRate(0);
+        console.log('cleared');
+    }
 
 
-    return <productsContext.Provider value={{ getTopThree, getAllProducts, getBrands, getCategories, setBrandID, setCatID, setRangePrice, setSortBy, setPageNumber, setNumOfPages, sortBy, catID, brandID, rangePrice, pageNumber, numOfPages }}>
+    return <productsContext.Provider value={{
+        activeInputCategory, setActiveInputCategory,
+        activeInputBrand, setActiveInputBrand
+        , activePrice, setActivePrice, customRate, setCustomRate, clearSavedFilter, getTopThree, getAllProducts, getBrands, getCategories, setBrandID, setCatID, setRangePrice, setSortBy, setPageNumber, setNumOfPages, sortBy, catID, brandID, rangePrice, pageNumber, numOfPages
+    }}>
         {children}
     </productsContext.Provider>
 }
