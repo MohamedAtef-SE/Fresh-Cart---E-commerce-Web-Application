@@ -2,9 +2,7 @@ import axios, { Axios } from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-
 export const productsContext = createContext();
-
 
 export default function AllProductsProvider({ children }) {
 
@@ -39,6 +37,10 @@ export default function AllProductsProvider({ children }) {
     }
 
     async function getAllProducts() {
+        console.log('brand: ', brandID);
+        console.log('category: ', catID);
+        console.log('Range Price: ', rangePrice);
+
         return axios.get('https://ecommerce.routemisr.com/api/v1/products', {
             params: {
                 'brand': brandID,
@@ -71,7 +73,7 @@ export default function AllProductsProvider({ children }) {
         })
     }
     function clearSavedFilter() {
-        localStorage.removeItem('cartID');
+        localStorage.removeItem('catID');
         localStorage.removeItem('brandID');
         localStorage.removeItem('priceRange');
         localStorage.removeItem('customRate');
@@ -80,6 +82,7 @@ export default function AllProductsProvider({ children }) {
         setActivePrice('');
         setCustomRate(0);
         console.log('cleared');
+
     }
 
 

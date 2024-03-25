@@ -32,8 +32,8 @@ export default function Home() {
         gcTime: 60000,
     });
     useEffect(() => {
-        if (localStorage.getItem('cartID')) {
-            setActiveInputCategory(localStorage.getItem('cartID'))
+        if (localStorage.getItem('catID')) {
+            setActiveInputCategory(localStorage.getItem('catID'))
         }
         if (localStorage.getItem('brandID')) {
             setActiveInputBrand(localStorage.getItem('brandID'))
@@ -129,29 +129,26 @@ export default function Home() {
         queryFn: getBrands,
     });
 
-    function handleCheckList({ eventOwner, page, cat, brand, price, sort }) {
-        if (page == undefined && cat == undefined && brand == undefined && price == undefined && sort == undefined) {
+    function handleCheckList({ eventOwner, page, cat, brand, price, sort, rate }) {
+        if (page == undefined && cat == undefined && rate == undefined && brand == undefined && price == undefined && sort == undefined) {
             setNumOfPages(undefined);
             setCatID(undefined);
             setBrandID(undefined);
             setRangePrice(undefined);
             setSortBy(undefined)
-            setCustomRate(0);
-            setActiveInputBrand('');
-            setActiveInputCategory('');
-            setActivePrice('');
-
+            setCustomRate(undefined);
             clearSavedFilter();
         }
-
         if (cat !== undefined) {
-
             if (cat.id !== catID) {
                 setCatID(cat.id);
+                console.log('checked')
             }
             else if (cat.id === catID) {
                 cat.checked = false;
                 setCatID(undefined);
+                setActiveInputCategory('');
+                console.log('unchecked')
             }
             setPageNumber(1);
         }
@@ -164,16 +161,24 @@ export default function Home() {
             else if (brand.id === brandID) {
                 brand.checked = false;
                 setBrandID(undefined);
+                setActiveInputBrand('');
             }
             setPageNumber(1);
 
         }
-
         if (price !== undefined) {
-            setRangePrice(price);
-            setPageNumber(1);
 
+            if (price !== rangePrice) {
+                setRangePrice(price);
+                setPageNumber(1);
+            }
+            else {
+                setRangePrice('');
+                setActivePrice('');
+                setPageNumber(1);
+            }
         }
+
 
         if (sort !== sortBy) {
             setSortBy(sort);
@@ -183,6 +188,17 @@ export default function Home() {
         if (page !== undefined) {
             setPageNumber(page);
         }
+
+        if (rate !== undefined) {
+            if (rate == customRate) {
+                setCustomRate(0);
+            }
+            else {
+                setCustomRate(rate);
+
+            }
+        }
+
         setTimeout(() => { refetch() }, [1000]);
     }
 
@@ -213,7 +229,7 @@ export default function Home() {
 
     function handleActiveCategory(id) {
         setActiveInputCategory(id);
-        localStorage.setItem('cartID', id);
+        localStorage.setItem('catID', id);
     }
     function handleActiveBrand(id) {
         setActiveInputBrand(id)
@@ -225,7 +241,7 @@ export default function Home() {
         localStorage.setItem('priceRange', value);
     }
     function handleCustomRate(value) {
-        setCustomRate(value);
+
         localStorage.setItem('customRate', value);
     }
 
@@ -264,7 +280,7 @@ export default function Home() {
                 <div className="row">
                     <div className="col-3">
                         <div className="box bg-body-tertiary min-vh-100 p-3 ">
-                            <h6 onClick={() => { handleCheckList({ page: undefined, cat: undefined, brand: undefined, price: undefined, sort: undefined }) }} role="button" className="mt-2 text-end text-main"><i className="fa-solid fa-filter-circle-xmark"></i > Clear all</h6>
+                            <h6 onClick={() => { handleCheckList({ page: undefined, cat: undefined, brand: undefined, price: undefined, sort: undefined, rate: undefined }) }} role="button" className="mt-2 text-end text-main"><i className="fa-solid fa-filter-circle-xmark"></i > Clear all</h6>
                             <div className="cat-list my-4">
                                 <h6 className="fw-bolder">Categories</h6>
                                 <ul className="list-unstyled p-0 m-0">
@@ -299,35 +315,35 @@ export default function Home() {
                             </div>
                             <div className="rate-list my-4">
                                 <ul className="p-0 m-0 list-unstyled">
-                                    <li className={customRate == 5 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(5) }} role="button">
+                                    <li className={customRate == 5 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(5); handleCheckList({ rate: 5 }) }} role="button">
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                     </li>
-                                    <li className={customRate == 4 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(4) }} role="button">
+                                    <li className={customRate == 4 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(4); handleCheckList({ rate: 4 }) }} role="button">
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star mx-1"></i>
                                     </li>
-                                    <li className={customRate == 3 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(3) }} role="button">
+                                    <li className={customRate == 3 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(3); handleCheckList({ rate: 3 }) }} role="button">
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
                                     </li>
-                                    <li className={customRate == 2 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(2) }} role="button">
+                                    <li className={customRate == 2 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(2); handleCheckList({ rate: 2 }) }} role="button">
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
                                     </li>
-                                    <li className={customRate == 1 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(1) }} role="button">
+                                    <li className={customRate == 1 ? 'active-rate' : null + "my-2"} onClick={() => { handleCustomRate(1); handleCheckList({ rate: 1 }) }} role="button">
                                         <i className="fa-solid fa-star text-warning mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
                                         <i className="fa-solid fa-star  mx-1"></i>
